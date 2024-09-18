@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter.ttk import Treeview, Combobox
 from tkinter import ttk
 
+import databaseManager
+
+
 def openWindow(table: Treeview):
     all_items = table.get_children()
     ids = [table.item(item, "values")[0] for item in all_items]
@@ -29,7 +32,7 @@ def openWindow(table: Treeview):
     # Type Label and Entry
     label = tk.Label(frame, text="Type")
     label.pack(pady=10)
-    entry_type = ttk.Combobox(frame, values=["PC", "Bildschirm", "Laptop", "Buch", "Stift"])
+    entry_type = ttk.Combobox(frame, values=databaseManager.getAllTypesForBoxAsList())
     entry_type.set("Select Type")
     entry_type.pack(fill="x", padx=10)
 
@@ -74,4 +77,5 @@ def saveEdits(window: tk.Tk, box: Combobox, table: Treeview, service, typ, raum)
         if item_id == selected_value:
             table.delete(item)
             table.insert("", tk.END, values=(selected_value, service, typ, raum))
+            databaseManager.updateRow(selected_value,service,typ,raum)
             window.destroy()

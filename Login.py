@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 import databaseManager
+import main
 import userlogin.en_decrypter
 
 
@@ -12,6 +13,7 @@ def login():
 
     if userlogin.en_decrypter.encode(password) == databaseManager.getUserByName(name)[0][3]:  # Simple condition for demonstration
         root.destroy()
+        main.mainWindow()
     else:
         messagebox.showwarning("Login", "Invalid Credentials")
 
@@ -41,6 +43,8 @@ password_entry.pack(pady=5)
 # Add a login button
 login_button = tk.Button(root, text="Login", command=login)
 login_button.pack(pady=20)
+
+root.protocol("WM_DELETE_WINDOW", lambda: root.destroy())
 
 # Start the application
 root.mainloop()
