@@ -1,8 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from awthemes import AwthemesStyle
-
+import Login
 import table.gui
 from table.gui import create_table
 from treeview.gui import create_tree
@@ -10,32 +9,29 @@ from treeview.gui import create_tree
 
 # Define light and dark themes
 def set_light_theme():
-    style = AwthemesStyle(root)
-    style.theme_use("awlight")
     root.configure(bg='white')
     theme_button.configure(bg='lightgrey', fg='black')
     types_button.configure(bg='lightgrey', fg='black')
     table.gui.set_light_theme(root)
     header_label.configure(bg='lightgrey', fg='black')
 
+
 def set_dark_theme():
-    style = AwthemesStyle(root)
-    style.theme_use("awdark")
     root.configure(bg='#2e2e2e')
     theme_button.configure(bg='#3c3c3c', fg='white')
     types_button.configure(bg='#3c3c3c', fg='white')
     table.gui.set_dark_theme(root)
     header_label.configure(bg='#3c3c3c', fg='white')
 
+
 def toggle_theme():
     global dark_mode
-    if not dark_mode:
+    if dark_mode:
         set_light_theme()
     else:
         set_dark_theme()
     dark_mode = not dark_mode
 
-import Login
 
 def mainWindow():
     global dark_mode, root, types_button, theme_button, header_label
@@ -77,7 +73,10 @@ def mainWindow():
     types_button.grid(row=0, column=2, padx=20, pady=80, sticky="ne")
 
     # Apply initial theme
-    set_dark_theme()
+    if dark_mode:
+        set_dark_theme()
+    else:
+        set_light_theme()
 
     # Run the application
     root.mainloop()

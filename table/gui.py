@@ -3,58 +3,62 @@ import tkinter as tk
 import databaseManager
 from table import addRowWindow, deleteRow, editRowWindow
 from tkinter import ttk
-from awthemes import AwthemesStyle
 
-# Global variables for buttons and treeview
+# Global variables for buttons and treeview_table
 button1 = None
 button2 = None
 button3 = None
 treeview = None
 
+
 # Function to sort the Treeview column and update the header indicator
-def sort_column(treeview, col, reverse):
+def sort_column(treeview_table, col, reverse):
     # Remove current indicators
-    for heading in treeview["columns"]:
-        current_text = treeview.heading(heading, "text")
+    for heading in treeview_table["columns"]:
+        current_text = treeview_table.heading(heading, "text")
         # Remove any existing indicators
         if current_text.endswith("▲") or current_text.endswith("▼"):
-            treeview.heading(heading, text=current_text[:-1])
+            treeview_table.heading(heading, text=current_text[:-1])
 
     # Get the data from the Treeview
-    data = [(treeview.set(item, col), item) for item in treeview.get_children('')]
+    data = [(treeview_table.set(item, col), item) for item in treeview_table.get_children('')]
 
     # Sort data
     data.sort(reverse=reverse)
 
     # Rearrange items in sorted positions
     for index, (val, item) in enumerate(data):
-        treeview.move(item, '', index)
+        treeview_table.move(item, '', index)
 
     # Update the column heading with the sorting indicator
     if reverse:
-        treeview.heading(col, text=treeview.heading(col, "text") + "▲")
+        treeview_table.heading(col, text=treeview_table.heading(col, "text") + "▲")
     else:
-        treeview.heading(col, text=treeview.heading(col, "text") + "▼")
+        treeview_table.heading(col, text=treeview_table.heading(col, "text") + "▼")
 
     # Reverse the sort order for the next click
-    treeview.heading(col, command=lambda: sort_column(treeview, col, not reverse))
+    treeview_table.heading(col, command=lambda: sort_column(treeview_table, col, not reverse))
+
 
 # Define light and dark themes
 def set_light_theme(root: tk.Tk):
-    style = AwthemesStyle(root)
-    style.theme_use("awlight")
+    style = ttk.Style()
+    style.theme_use("clam")
     root.configure(bg='white')
     button1.configure(bg='lightgrey', fg='black')
     button2.configure(bg='lightgrey', fg='black')
     button3.configure(bg='lightgrey', fg='black')
+    style.configure("Treeview", background="lightgrey", fieldbackground="lightgrey", foreground="black")
+
 
 def set_dark_theme(root: tk.Tk):
-    style = AwthemesStyle(root)
-    style.theme_use("awdark")
+    style = ttk.Style()
+    style.theme_use("clam")
     root.configure(bg='#2e2e2e')
     button1.configure(bg='#3c3c3c', fg='white')
     button2.configure(bg='#3c3c3c', fg='white')
     button3.configure(bg='#3c3c3c', fg='white')
+    style.configure("Treeview", background="#3c3c3c", fieldbackground="#3c3c3c", foreground="white")
 
 
 def create_table(root):

@@ -18,7 +18,7 @@ def openWindow(table: Treeview):
 
     # ID Label and Entry
     label = tk.Label(frame, text="ID")
-    label.pack
+    label.pack()
     entry_id = ttk.Combobox(frame, values=ids)
     entry_id.set("1")
     entry_id.pack(fill="x", padx=10)
@@ -43,7 +43,9 @@ def openWindow(table: Treeview):
     entry_raum.pack(fill="x", padx=10)
 
     # Add save Button
-    save = tk.Button(root, text="Save", command=lambda: saveEdits(root,entry_id,table,entry_service_tag.get(),entry_type.get(),entry_raum.get()))
+    save = tk.Button(root, text="Save",
+                     command=lambda: saveEdits(root, entry_id, table, entry_service_tag.get(), entry_type.get(),
+                                               entry_raum.get()))
     save.pack(side="left", padx=5)
 
     # Add cancel Button
@@ -52,8 +54,10 @@ def openWindow(table: Treeview):
 
     # Run the Tkinter event loop
     on_combobox_select(entry_id, table, entry_service_tag, entry_type, entry_raum)
-    entry_id.bind("<<ComboboxSelected>>", lambda event: on_combobox_select(entry_id, table, entry_service_tag, entry_type, entry_raum))
+    entry_id.bind("<<ComboboxSelected>>",
+                  lambda event: on_combobox_select(entry_id, table, entry_service_tag, entry_type, entry_raum))
     root.mainloop()
+
 
 def on_combobox_select(box: Combobox, table: Treeview, service, typ, raum):
     selected_value = box.get()
@@ -69,6 +73,7 @@ def on_combobox_select(box: Combobox, table: Treeview, service, typ, raum):
             raum.delete(0, tk.END)
             raum.insert(0, row_values[3])
 
+
 def saveEdits(window: tk.Tk, box: Combobox, table: Treeview, service, typ, raum):
     selected_value = box.get()
     all_items = table.get_children()
@@ -77,5 +82,5 @@ def saveEdits(window: tk.Tk, box: Combobox, table: Treeview, service, typ, raum)
         if item_id == selected_value:
             table.delete(item)
             table.insert("", tk.END, values=(selected_value, service, typ, raum))
-            databaseManager.updateRow(selected_value,service,typ,raum)
+            databaseManager.updateRow(selected_value, service, typ, raum)
             window.destroy()
